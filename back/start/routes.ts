@@ -18,8 +18,21 @@
 |
 */
 
-import Route from '@ioc:Adonis/Core/Route'
+import Route from "@ioc:Adonis/Core/Route";
+import GoogleAuthController from "../app/Controllers/Http/GoogleAuthController";
+import GoogleAuthService from "../app/Services/GoogleAuthService";
 
-Route.get('/', async () => {
-  return { hello: 'world' }
-})
+const googleAuthService = new GoogleAuthService();
+const googleAuthController = new GoogleAuthController(googleAuthService);
+
+Route.get("/", async () => {
+  return { hello: "world" };
+});
+
+Route.get("/google/redirect", async (ctx) => {
+  googleAuthController.redirect(ctx);
+});
+
+Route.get("/google/callback", async (ctx) => {
+  return googleAuthController.callback(ctx);
+});

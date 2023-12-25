@@ -3,16 +3,14 @@ module.exports = {
       "plugin:adonis/typescriptApp",
       "plugin:prettier/recommended"
     ],
-    "plugins": [
-      "prettier"
-    ],
     "rules": {
       "prettier/prettier": "error",
       "no-console": "error"
     },
     parserOptions: {
       project: 'tsconfig.json',
-      tsconfigRootDir: __dirname
+      tsconfigRootDir: __dirname,
+      extraFileExtensions: [''],
    },
    ignorePatterns: "*.cjs"
 }

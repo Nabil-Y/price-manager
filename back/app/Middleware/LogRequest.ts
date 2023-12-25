@@ -1,4 +1,4 @@
-import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 
 export default class LogRequest {
   public async handle(
@@ -7,7 +7,7 @@ export default class LogRequest {
   ) {
     logger.info(
       `${new Date().toLocaleString()} -> ${response.getStatus()} ${request.method()}: ${request.url()}`
-    )
-    await next()
+    );
+    await next();
   }
 }
