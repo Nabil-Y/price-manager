@@ -6,7 +6,7 @@ import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 export default class GoogleAuthController implements AuthController {
   constructor(private readonly googleAuthService: GoogleAuthService) {}
 
-  public async redirect(ctx: HttpContextContract) {
+  public async login(ctx: HttpContextContract) {
     await this.googleAuthService.redirect(ctx);
   }
 

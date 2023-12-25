@@ -29,8 +29,8 @@ Route.get("/", async () => {
   return { hello: "world" };
 });
 
-Route.get("/google/redirect", async (ctx) => {
-  googleAuthController.redirect(ctx);
+Route.get("/google/login", async (ctx) => {
+  googleAuthController.login(ctx);
 });
 
 Route.get("/google/callback", async (ctx) => {
