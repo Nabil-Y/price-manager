@@ -19,6 +19,7 @@
 */
 
 import Route from "@ioc:Adonis/Core/Route";
+import Logger from "@ioc:Adonis/Core/Logger";
 import GoogleAuthController from "../app/Controllers/Http/GoogleAuthController";
 import GoogleAuthService from "../app/Services/GoogleAuthService";
 
@@ -35,4 +36,16 @@ Route.get("/google/login", async (ctx) => {
 
 Route.get("/google/callback", async (ctx) => {
   return googleAuthController.callback(ctx);
+});
+
+Route.get("/dashboard", async ({ auth }) => {
+  await auth.use("web").authenticate();
+  Logger.info(`${auth.use("web").user["$attributes"].email} is logged in`);
+});
+
+Route.get("/logout", async ({ auth, response }) => {
+  await auth.use("web").authenticate();
+  Logger.info(`${auth.use("web").user["$attributes"].email} is logged out`);
+  await auth.logout();
+  await response.redirect().toPath("/");
 });

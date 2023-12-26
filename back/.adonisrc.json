@@ -22,7 +22,9 @@
     "@adonisjs/core",
     "@adonisjs/ally",
     "@adonisjs/shield",
-    "@adonisjs/lucid"
+    "@adonisjs/lucid",
+    "@adonisjs/auth",
+    "@adonisjs/session"
   ],
   "aceProviders": [
     "@adonisjs/repl"

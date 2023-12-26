@@ -3,6 +3,8 @@ import { BaseModel, beforeCreate, column } from "@ioc:Adonis/Lucid/Orm";
 import { v4 as uuid } from "uuid";
 
 export default class ItemPrice extends BaseModel {
+  public static table = "price_manager.item_price";
+
   @beforeCreate()
   public static async addUuidHook(itemPrice: ItemPrice) {
     itemPrice.id = uuid();

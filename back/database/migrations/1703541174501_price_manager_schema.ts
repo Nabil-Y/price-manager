@@ -1,6 +1,6 @@
 import BaseSchema from "@ioc:Adonis/Lucid/Schema";
 
-export default class extends BaseSchema {
+export default class PriceManagerSchema extends BaseSchema {
   public up() {
     this.schema.createSchemaIfNotExists("price_manager");
   }

@@ -1,15 +1,14 @@
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import AuthService from "../Domain/Interface/AuthService";
-import { AllyUserContract, GoogleToken } from "@ioc:Adonis/Addons/Ally";
+import User from "../Models/User";
+import Logger from "@ioc:Adonis/Core/Logger";
 
 export default class GoogleAuthService implements AuthService {
   public redirect({ ally }: HttpContextContract) {
     return ally.use("google").redirect();
   }
 
-  public async callback({
-    ally,
-  }: HttpContextContract): Promise<AllyUserContract<GoogleToken> | string> {
+  public async callback({ ally, auth, response }: HttpContextContract) {
     const google = ally.use("google");
 
     if (google.accessDenied()) {
@@ -21,11 +20,45 @@ export default class GoogleAuthService implements AuthService {
     }
 
     if (google.hasError()) {
-      return google.getError() ?? "Unknown error from Google";
+      return google.getError();
     }
 
     const user = await google.user();
 
-    return user;
+    // To clean after with repo functions
+
+    if (!user.email) {
+      throw new Error("No email");
+    }
+
+    try {
+      const dbUser = await User.query()
+        .where("email", user.email)
+        .where("id", user.id)
+        .firstOrFail();
+
+      Logger.info(`existingUser: ${dbUser.email}`);
+
+      await auth.login(dbUser);
+
+      return response.redirect().toPath("/dashboard");
+    } catch (e) {
+      Logger.error(e);
+    }
+
+    try {
+      const newUser = await User.create({
+        id: user.id,
+        email: user.email,
+      });
+
+      Logger.info(`newUser: ${newUser.email}`);
+
+      await auth.login(newUser);
+
+      return response.redirect().toPath("/dashboard");
+    } catch (e) {
+      Logger.error(e);
+    }
   }
 }
