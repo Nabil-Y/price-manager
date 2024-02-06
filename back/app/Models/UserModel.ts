@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
 import { BaseModel, column } from "@ioc:Adonis/Lucid/Orm";
 
-export default class User extends BaseModel {
+export default class UserModel extends BaseModel {
   public static table = "price_manager.user";
 
   @column({ isPrimary: true })

@@ -5,11 +5,11 @@ import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 export default class GoogleAuthController implements AuthController {
   constructor(private readonly googleAuthService: GoogleAuthService) {}
 
-  public async login(ctx: HttpContextContract) {
+  public async login(ctx: HttpContextContract): Promise<void> {
     await this.googleAuthService.redirect(ctx);
   }
 
-  public async callback(ctx: HttpContextContract) {
+  public async callback(ctx: HttpContextContract): Promise<void> {
     await this.googleAuthService.callback(ctx);
   }
 }

@@ -5,24 +5,24 @@ import GoogleAuthRepository from "../Repositories/GoogleAuthRepository";
 export default class GoogleAuthService implements AuthService {
   constructor(private readonly googleAuthRepository: GoogleAuthRepository) {}
 
-  public redirect({ ally }: HttpContextContract) {
+  public redirect({ ally }: HttpContextContract): Promise<void> {
     return ally.use("google").redirect();
   }
 
-  public async callback(ctx: HttpContextContract) {
+  public async callback(ctx: HttpContextContract): Promise<void> {
     const { ally } = ctx;
     const google = ally.use("google");
 
     if (google.accessDenied()) {
-      return "Access was denied";
+      throw new Error("Access was denied");
     }
 
     if (google.stateMisMatch()) {
-      return "Request expired. Retry again";
+      throw new Error("Request expired. Retry again");
     }
 
     if (google.hasError()) {
-      return google.getError();
+      throw new Error(google.getError() ?? "google.hasError is null");
     }
 
     const user = await google.user();
